@@ -9,26 +9,34 @@ function randomIntFromInterval(min, max) { // min and max included
 
 
 class MyGame extends Phaser.Scene {
-    constructor() {
-        super();
-        this.maxSpeed = 800;
-        this.width = 800;
-        this.height = 600;
+    init() {
+        this.width = this.game.config.width;
+        this.height = this.game.config.height;
+
+        this.speedMax = 800;
+        this.speedBump = 500;
+        this.speedX = 300;
+
+        this.barrierShiftFromSide = 120;
+        this.betweenBarriers = 400;
     }
 
     create() {
         this.player = this.add.circle(400, 300, 25, 0xff8800);
         this.physics.add.existing(this.player);
-        this.player.body.velocity.x = 300;
+        this.player.body.velocity.x = this.speedX;
         this.input.on("pointerdown", this.jump, this);
         this.cameras.main.startFollow(this.player, false, 1, 0);
 
         let bX = this.width;
         this.barriers = this.physics.add.staticGroup();
         for (let i = 0; i < 100; i++) {
-            const holeY = randomIntFromInterval(150, this.cameras.main.height - 150);
+            const holeY = randomIntFromInterval(
+                this.barrierShiftFromSide,
+                this.height - this.barrierShiftFromSide,
+            );
             const b = Barrier.add(this, bX, holeY, this.height);
-            bX += 400;
+            bX += this.betweenBarriers;
             this.barriers.add(b.topRect);
             this.barriers.add(b.bottomRect);
         }
@@ -37,7 +45,7 @@ class MyGame extends Phaser.Scene {
 
     jump() {
         const curSpeed = this.player.body.velocity.y;
-        this.player.body.velocity.y = Math.max(-this.maxSpeed, curSpeed - 500);
+        this.player.body.velocity.y = Math.max(-this.speedMax, curSpeed - this.speedBump);
     }
 
     update() {
@@ -48,8 +56,8 @@ class MyGame extends Phaser.Scene {
 
     gameOver() {
         this.player.body.setEnable(false);
-        this.cameras.main.fade(250);
-        this.time.delayedCall(250, () => this.scene.restart());
+        this.cameras.main.fade(500);
+        this.time.delayedCall(500, () => this.scene.restart());
     }
 }
 
@@ -62,7 +70,10 @@ const config = {
     physics: {
         default: 'arcade',
         arcade: {
-            gravity: { y: 800 },
+            gravity: {
+                y: 800,
+            },
+            debug: false,
         },
     },
 };
