@@ -22,12 +22,18 @@ class MyGame extends Phaser.Scene {
     }
 
     create() {
-        this.player = this.add.circle(400, 300, 25, 0xff8800);
+        const playerX = this.width * 1 / 3;
+        // todo: collision box for circle is a rectangle for some reason, fix it
+        this.player = this.add.circle(playerX, this.height / 2, 25, 0xff8800);
         this.physics.add.existing(this.player);
         this.player.body.velocity.x = this.speedX;
         this.input.on("pointerdown", this.jump, this);
-        this.cameras.main.startFollow(this.player, false, 1, 0);
 
+        // camera follows players x coordinate, stay in the center of the screen
+        const cameraShift = this.width / 2 - playerX;
+        this.cameras.main.startFollow(this.player, false, 1, 0, -cameraShift, 0);
+
+        // todo: add barriers dynamically
         let bX = this.width;
         this.barriers = this.physics.add.staticGroup();
         for (let i = 0; i < 100; i++) {
