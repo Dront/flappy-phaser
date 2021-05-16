@@ -8,7 +8,11 @@ function randomIntFromInterval(min, max) { // min and max included
 }
 
 
-class MyGame extends Phaser.Scene {
+class GameScene extends Phaser.Scene {
+    constructor() {
+        super('GameScene');
+    }
+
     init() {
         this.width = this.game.config.width;
         this.height = this.game.config.height;
@@ -47,6 +51,10 @@ class MyGame extends Phaser.Scene {
             this.barriers.add(b.bottomRect);
         }
         this.physics.add.collider(this.player, this.barriers, () => this.gameOver());
+
+        this.input.keyboard.on('keydown-ESC', this.pauseGame, this);
+
+        // todo: draw game score and maybe save records?
     }
 
     jump() {
@@ -65,6 +73,31 @@ class MyGame extends Phaser.Scene {
         this.cameras.main.fade(500);
         this.time.delayedCall(500, () => this.scene.restart());
     }
+
+    pauseGame() {
+        this.scene.pause();
+        this.scene.launch('PauseOverlayScene');
+    }
+}
+
+class PauseOverlayScene extends Phaser.Scene {
+    constructor() {
+        super('PauseOverlayScene');
+    }
+
+    create() {
+        this.add.rectangle(
+            0, 0, this.game.config.width, this.game.config.height, 0x000000, 0.3,
+        ).setOrigin(0, 0);
+        this.input.keyboard.on('keydown', this.unpause, this);
+
+        // todo: draw text 'PAUSE press any key to continue
+    }
+
+    unpause() {
+        this.scene.stop();
+        this.scene.resume('GameScene');
+    }
 }
 
 const config = {
@@ -72,7 +105,7 @@ const config = {
     width: 800,
     height: 600,
     backgroundColor: "#5DACD8",
-    scene: MyGame,
+    scene: [GameScene, PauseOverlayScene],
     physics: {
         default: 'arcade',
         arcade: {
