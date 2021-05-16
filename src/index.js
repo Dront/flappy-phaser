@@ -15,10 +15,10 @@ class MyGame extends Phaser.Scene {
 
         this.speedMax = 800;
         this.speedBump = 500;
-        this.speedX = 300;
+        this.speedX = this.width * 0.5;
 
         this.barrierShiftFromSide = 120;
-        this.betweenBarriers = 400;
+        this.betweenBarriers = this.width * 0.5;
     }
 
     create() {
@@ -29,7 +29,7 @@ class MyGame extends Phaser.Scene {
         this.player.body.velocity.x = this.speedX;
         this.input.on("pointerdown", this.jump, this);
 
-        // camera follows players x coordinate, stay in the center of the screen
+        // camera follows players x coordinate, stays in the center of the screen
         const cameraShift = this.width / 2 - playerX;
         this.cameras.main.startFollow(this.player, false, 1, 0, -cameraShift, 0);
 
