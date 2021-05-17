@@ -89,7 +89,9 @@ class PauseOverlayScene extends Phaser.Scene {
         this.add.rectangle(
             0, 0, this.game.config.width, this.game.config.height, 0x000000, 0.3,
         ).setOrigin(0, 0);
-        this.input.keyboard.on('keydown', this.unpause, this);
+        this.input.keyboard.on('keydown-ESC', this.unpause, this);
+        this.input.keyboard.on('keydown-SPACE', this.unpause, this);
+        this.input.keyboard.on('keydown-ENTER', this.unpause, this);
 
         // todo: draw text 'PAUSE press any key to continue
     }
