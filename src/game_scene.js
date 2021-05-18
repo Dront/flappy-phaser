@@ -54,7 +54,16 @@ export default class GameScene extends Phaser.Scene {
 
         this.input.keyboard.on('keydown-ESC', this.pauseGame, this);
 
-        // todo: draw game score and maybe save records?
+        this.scoreText = this.add.text(this.width * 0.1, this.height * 0.1, this.getScoreText());
+        // stick to camera
+        this.scoreText.setScrollFactor(0, 0);
+
+        // todo: save records?
+    }
+
+    getScoreText() {
+        const score = Math.floor(this.player.x);
+        return score.toString();
     }
 
     jump() {
@@ -66,6 +75,7 @@ export default class GameScene extends Phaser.Scene {
         if (this.player.y <= 0 || this.player.y > this.height) {
             this.gameOver();
         }
+        this.scoreText.setText(this.getScoreText());
     }
 
     gameOver() {
