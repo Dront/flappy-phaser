@@ -30,8 +30,6 @@ export default class PauseOverlayScene extends Phaser.Scene {
         // render help text a bit lower then pause symbol
         const textPosY = pauseImg.y + pauseImg.height / 2 + this.height * 0.05;
         const helpText = this.add.text(this.width / 2, textPosY, 'press space, esc or enter to continue');
-        // otherwise hidpi display looks awful
-        helpText.setResolution(2.0);
         helpText.x -= helpText.width / 2;
     }
 

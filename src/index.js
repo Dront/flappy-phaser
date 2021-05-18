@@ -8,6 +8,8 @@ const config = {
     type: Phaser.AUTO,
     width: 800,
     height: 600,
+    // this makes rendered text objects look better (by x2 amount of rendering needed)
+    resolution: window.devicePixelRatio,
     backgroundColor: "#5DACD8",
     scene: [GameScene, PauseOverlayScene],
     physics: {
