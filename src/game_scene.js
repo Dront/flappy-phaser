@@ -20,6 +20,7 @@ export default class GameScene extends Phaser.Scene {
         this.speedMax = 800;
         this.speedBump = 500;
         this.speedX = this.width * 0.5;
+        this.gravity = 900;
 
         this.barrierShiftFromSide = 120;
         this.betweenBarriers = this.width * 0.5;
@@ -32,6 +33,7 @@ export default class GameScene extends Phaser.Scene {
         this.physics.add.existing(this.player);
         this.player.body.setCircle(playerSize);
         this.player.body.velocity.x = this.speedX;
+        this.player.body.setGravity(0, this.gravity);
         this.input.on("pointerdown", this.jump, this);
 
         // camera follows players x coordinate, stays in the center of the screen
