@@ -57,6 +57,7 @@ export default class GameScene extends Phaser.Scene {
 
         this.input.keyboard.on('keydown-ESC', this.pauseGame, this);
 
+        // todo: add styling and make it more visible on the background and barriers
         this.scoreText = this.add.text(this.width * 0.1, this.height * 0.1, this.getScoreText());
         // stick to camera
         this.scoreText.setScrollFactor(0, 0);
@@ -83,8 +84,9 @@ export default class GameScene extends Phaser.Scene {
 
     gameOver() {
         this.player.body.setEnable(false);
-        this.cameras.main.fade(500);
-        this.time.delayedCall(500, () => this.scene.restart());
+        const fadeTime = 500;  // ms
+        this.cameras.main.fade(fadeTime);
+        this.time.delayedCall(fadeTime, () => this.scene.restart());
     }
 
     pauseGame() {
