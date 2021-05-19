@@ -27,9 +27,10 @@ export default class GameScene extends Phaser.Scene {
 
     create() {
         const playerX = this.width * 1 / 3;
-        // todo: collision box for circle is a rectangle for some reason, fix it
-        this.player = this.add.circle(playerX, this.height / 2, 25, 0xff8800);
+        const playerSize = 25;
+        this.player = this.add.circle(playerX, this.height / 2, playerSize, 0xff8800);
         this.physics.add.existing(this.player);
+        this.player.body.setCircle(playerSize);
         this.player.body.velocity.x = this.speedX;
         this.input.on("pointerdown", this.jump, this);
 
