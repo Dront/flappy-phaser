@@ -45,20 +45,10 @@ export default class GameScene extends Phaser.Scene {
         const cameraShift = this.width / 2 - playerX;
         this.cameras.main.startFollow(this.player, false, 1, 0, -cameraShift, 0);
 
-        // todo: add barriers dynamically
-        let bX = this.width;
-        this.barriers = this.physics.add.staticGroup();
-        for (let i = 0; i < 100; i++) {
-            const holeY = randomIntFromInterval(
-                this.barrierShiftFromSide,
-                this.height - this.barrierShiftFromSide,
-            );
-            const b = Barrier.add(this, bX, holeY, this.height);
-            bX += this.betweenBarriers;
-            this.barriers.add(b.topRect);
-            this.barriers.add(b.bottomRect);
-        }
-        this.physics.add.collider(this.player, this.barriers, () => this.gameOver());
+        this.barriersList = [];
+        this.barriersGroup = this.physics.add.staticGroup();
+        this.updateBarriers();
+        this.physics.add.collider(this.player, this.barriersGroup, () => this.gameOver());
 
         this.input.keyboard.on('keydown-ESC', this.pauseGame, this);
 
@@ -70,6 +60,43 @@ export default class GameScene extends Phaser.Scene {
 
         this.tryCountText = this.add.text(this.width * 0.9, this.height * 0.05, this.getTryCountText());
         this.tryCountText.setScrollFactor(0, 0);
+    }
+
+    pushBarrier(x) {
+        const holeY = randomIntFromInterval(
+            this.barrierShiftFromSide,
+            this.height - this.barrierShiftFromSide,
+        );
+        const barrier = Barrier.add(this, x, holeY, this.height);
+        this.barriersGroup.add(barrier.topRect);
+        this.barriersGroup.add(barrier.bottomRect);
+        this.barriersList.push(barrier);
+        return barrier;
+    }
+
+    popLeftBarrier() {
+        const barrier = this.barriersList.shift();
+        this.barriersGroup.remove(barrier.topRect, true, true);
+        this.barriersGroup.remove(barrier.bottomRect, true, true);
+    }
+
+    // Cleans up barriers to the left of player - width, adds barriers up to player + width.
+    // We should probably use linked-list-like structure for barriers, but meh.
+    updateBarriers() {
+        const minX = this.player.x - this.width;
+        while (this.barriersList.length > 0 && this.barriersList[0].x < minX) {
+            this.popLeftBarrier()
+        }
+
+        if (this.barriersList.length === 0) {
+            this.pushBarrier(this.player.x + this.betweenBarriers);
+        }
+
+        const maxX = this.player.x + this.width;
+        let lastBarrier = this.barriersList[this.barriersList.length - 1];
+        while (lastBarrier.x < maxX) {
+            lastBarrier = this.pushBarrier(lastBarrier.x + this.betweenBarriers);
+        }
     }
 
     getScore() {
@@ -93,11 +120,14 @@ export default class GameScene extends Phaser.Scene {
         if (this.player.y <= 0 || this.player.y > this.height) {
             this.gameOver();
         }
+
         this.scoreText.setText(this.getScoreText());
         const score = this.getScore();
         if (score > stats.getHighscore()) {
             stats.setHighscore(score);
         }
+
+        this.updateBarriers();
     }
 
     gameOver() {
@@ -106,6 +136,7 @@ export default class GameScene extends Phaser.Scene {
         this.cameras.main.fade(fadeTime);
         this.time.delayedCall(fadeTime, () => this.scene.restart());
         stats.incTryCount();
+        // todo: play some nasty sound here
     }
 
     pauseGame() {

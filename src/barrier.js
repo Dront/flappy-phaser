@@ -1,8 +1,9 @@
 
 export class Barrier {
-    constructor(topRect, bottomRect) {
+    constructor(topRect, bottomRect, x) {
         this.topRect = topRect;
         this.bottomRect = bottomRect;
+        this.x = x;
     }
 
     static add(scene, posX, holeY, screenHeight) {
@@ -15,7 +16,7 @@ export class Barrier {
         let bottomRect = scene.add.rectangle(posX, bottomRectY, this.width, bottomRectHeight, this.color);
         bottomRect.setOrigin(0, 0);
 
-        return new Barrier(topRect, bottomRect);
+        return new Barrier(topRect, bottomRect, posX);
     }
 }
 
