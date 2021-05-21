@@ -135,7 +135,10 @@ export default class GameScene extends Phaser.Scene {
     }
 
     gameOver() {
-        this.player.body.setEnable(false);
+        // This function is called on collision before rendering the collision itself.
+        // If we disable player immidiately it'll look like the player has not touched the barrier,
+        // so small delay is used here to disable player just after rendering the next frame.
+        this.time.delayedCall(1, () => this.player.body.setEnable(false));
         const fadeTime = 500;  // ms
         this.cameras.main.fade(fadeTime);
         this.time.delayedCall(fadeTime, () => this.scene.restart());
