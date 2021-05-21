@@ -14,6 +14,11 @@ export default class GameScene extends Phaser.Scene {
         super('GameScene');
     }
 
+    preload() {
+        // default macos 'tput bel' sound
+        this.load.audio('game-over-sound', ['assets/Funk.wav']);
+    }
+
     init() {
         this.width = this.game.config.width;
         this.height = this.game.config.height;
@@ -50,6 +55,7 @@ export default class GameScene extends Phaser.Scene {
         this.updateBarriers();
         this.physics.add.collider(this.player, this.barriersGroup, () => this.gameOver());
 
+        this.gameOverSound = this.sound.add("game-over-sound");
         this.input.keyboard.on('keydown-ESC', this.pauseGame, this);
 
         // todo: add styling and make it more visible on the background and barriers
@@ -136,7 +142,7 @@ export default class GameScene extends Phaser.Scene {
         this.cameras.main.fade(fadeTime);
         this.time.delayedCall(fadeTime, () => this.scene.restart());
         stats.incTryCount();
-        // todo: play some nasty sound here
+        this.gameOverSound.play();
     }
 
     pauseGame() {
