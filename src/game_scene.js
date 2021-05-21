@@ -23,7 +23,6 @@ export default class GameScene extends Phaser.Scene {
         this.width = this.game.config.width;
         this.height = this.game.config.height;
 
-        this.speedMax = 800;
         this.speedBump = 500;
         this.speedX = this.width * 0.5;
         this.gravityX = 5;
@@ -118,8 +117,7 @@ export default class GameScene extends Phaser.Scene {
     }
 
     jump() {
-        const curSpeed = this.player.body.velocity.y;
-        this.player.body.velocity.y = Math.max(-this.speedMax, curSpeed - this.speedBump);
+        this.player.body.velocity.y -= this.speedBump;
     }
 
     update() {
