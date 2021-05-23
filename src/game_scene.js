@@ -94,7 +94,9 @@ export default class GameScene extends Phaser.Scene {
         }
 
         if (this.barriersList.length === 0) {
-            this.pushBarrier(this.player.x + this.betweenBarriers);
+            // the first barrier must appear a bit later then ordinary barrier,
+            // otherwise player has no time to react at the start of the game
+            this.pushBarrier(this.player.x + this.betweenBarriers * 1.5);
         }
 
         const maxX = this.player.x + this.width;
