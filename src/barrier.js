@@ -21,5 +21,5 @@ export class Barrier {
 }
 
 Barrier.width = 100;
-Barrier.holeSize = 200;
+Barrier.holeSize = 150;
 Barrier.color = 0x00ff88;

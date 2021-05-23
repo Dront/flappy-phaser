@@ -29,7 +29,7 @@ export default class GameScene extends Phaser.Scene {
         this.gravityY = 1000;
 
         this.barrierShiftFromSide = 120;
-        this.betweenBarriers = this.width * 0.55;
+        this.betweenBarriers = 400;
 
         this.previousHighscore = stats.getHighscore();
     }
