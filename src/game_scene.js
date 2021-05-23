@@ -1,11 +1,29 @@
 import Phaser from 'phaser';
+import * as seedrandom from 'seedrandom';
 
 import { Barrier } from './barrier';
 import * as stats from './stats';
 
 
-function randomIntFromInterval(min, max) { // min and max included
-    return Math.floor(Math.random() * (max - min + 1) + min);
+// Returns the same (repeatable) random sequence of barriers for provided seed
+class BarrierGenerator {
+    constructor(shiftFromSide, screenHeight, seed) {
+        this.shiftFromSide = shiftFromSide;
+        this.screenHeight = screenHeight;
+        this.rng = new seedrandom(seed);
+    }
+
+    randomIntFromInterval(min, max) { // min and max included
+        return Math.floor(this.rng() * (max - min + 1) + min);
+    }
+
+    generate(scene, x) {
+        const holeY = this.randomIntFromInterval(
+            this.shiftFromSide,
+            this.screenHeight - this.shiftFromSide,
+        );
+        return Barrier.add(scene, x, holeY, this.screenHeight);
+    }
 }
 
 
@@ -51,6 +69,11 @@ export default class GameScene extends Phaser.Scene {
 
         this.barriersList = [];
         this.barriersGroup = this.physics.add.staticGroup();
+        const rngSeed = Date.now().toString();
+        // fixed seed can be set here to replay the same map
+        // const rngSeed = '1621771730784';
+        console.log(`rng seed is ${rngSeed}`);
+        this.barriersGenerator = new BarrierGenerator(this.barrierShiftFromSide, this.height, rngSeed);
         this.updateBarriers();
         this.physics.add.collider(this.player, this.barriersGroup, () => this.gameOver());
 
@@ -68,11 +91,7 @@ export default class GameScene extends Phaser.Scene {
     }
 
     pushBarrier(x) {
-        const holeY = randomIntFromInterval(
-            this.barrierShiftFromSide,
-            this.height - this.barrierShiftFromSide,
-        );
-        const barrier = Barrier.add(this, x, holeY, this.height);
+        const barrier = this.barriersGenerator.generate(this, x);
         this.barriersGroup.add(barrier.topRect);
         this.barriersGroup.add(barrier.bottomRect);
         this.barriersList.push(barrier);
