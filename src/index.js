@@ -6,6 +6,7 @@ import GameScene from './game_scene';
 
 const config = {
     type: Phaser.AUTO,
+    // todo: lockOrientation?
     width: 960,
     height: 540,
     scale: {

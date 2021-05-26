@@ -78,7 +78,6 @@ export default class GameScene extends Phaser.Scene {
         this.physics.add.collider(this.player, this.barriersGroup, () => this.gameOver());
 
         this.gameOverSound = this.sound.add("game-over-sound");
-        this.input.keyboard.on('keydown-ESC', this.pauseGame, this);
 
         // todo: add styling and make it more visible on the background and barriers
         // todo: highlight score if this is a new highscore
@@ -88,6 +87,8 @@ export default class GameScene extends Phaser.Scene {
 
         this.tryCountText = this.add.text(this.width * 0.9, this.height * 0.05, this.getTryCountText());
         this.tryCountText.setScrollFactor(0, 0);
+
+        this.scene.launch('PauseOverlayScene');
     }
 
     pushBarrier(x) {
@@ -156,7 +157,7 @@ export default class GameScene extends Phaser.Scene {
     }
 
     gameOver() {
-        // This function is called on collision before rendering the collision itself.
+        // This function is called on collision before rendering the collision frame itself.
         // If we disable player immidiately it'll look like the player has not touched the barrier,
         // so small delay is used here to disable player just after rendering the next frame.
         this.time.delayedCall(1, () => this.player.body.setEnable(false));
@@ -165,10 +166,5 @@ export default class GameScene extends Phaser.Scene {
         this.time.delayedCall(fadeTime, () => this.scene.restart());
         stats.incTryCount();
         this.gameOverSound.play();
-    }
-
-    pauseGame() {
-        this.scene.pause();
-        this.scene.launch('PauseOverlayScene');
     }
 }

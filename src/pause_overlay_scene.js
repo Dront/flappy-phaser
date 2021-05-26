@@ -17,15 +17,37 @@ export default class PauseOverlayScene extends Phaser.Scene {
     }
 
     create() {
+        const btnShift = this.height * 0.05;
+        this.pausebtn = this.add.image(btnShift, this.height - btnShift, 'pause');
+        this.pausebtn.setAlpha(0.6);
+        this.pausebtn.setOrigin(0, 1);
+        const btnSize = this.height * 0.2;
+        this.pausebtn.setDisplaySize(btnSize, btnSize);
+
+        this.pausebtn.setInteractive();
+        this.pausebtn.on('pointerdown', this.pause, this);
+
+        this.input.keyboard.on('keydown-ESC', this.pause, this);
+    }
+
+    pause() {
+        this.scene.pause('GameScene');
+
+        this.pausebtn.destroy();
+
         this.add.rectangle(0, 0, this.width, this.height, 0x000000, 0.3).setOrigin(0, 0);
+
         // if we allow any key here, random actions (like browser hotkeys) will unpause the game,
         // so use only selected keys here
         this.input.keyboard.on('keydown-ESC', this.unpause, this);
         this.input.keyboard.on('keydown-SPACE', this.unpause, this);
         this.input.keyboard.on('keydown-ENTER', this.unpause, this);
 
+        // todo: use 'play' image here instead, and color it up!
         const pauseImg = this.add.image(this.width / 2, this.height / 2, 'pause');
-        pauseImg.setAlpha(0.5);
+        pauseImg.setAlpha(0.6);
+        pauseImg.setInteractive();
+        pauseImg.on('pointerdown', this.unpause, this);
 
         // render help text a bit lower then pause symbol
         const textPosY = pauseImg.y + pauseImg.height / 2 + this.height * 0.05;
@@ -34,7 +56,7 @@ export default class PauseOverlayScene extends Phaser.Scene {
     }
 
     unpause() {
-        this.scene.stop();
         this.scene.resume('GameScene');
+        this.scene.restart();
     }
 }
