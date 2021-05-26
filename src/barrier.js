@@ -20,6 +20,6 @@ export class Barrier {
     }
 }
 
-Barrier.width = 100;
+Barrier.width = 80;
 Barrier.holeSize = 540 * (1 / 3);
 Barrier.color = 0x00ff88;

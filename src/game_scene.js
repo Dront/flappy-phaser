@@ -56,6 +56,7 @@ export default class GameScene extends Phaser.Scene {
         const playerX = this.width * 1 / 3;
         const playerSize = 25;
         this.player = this.add.circle(playerX, this.height / 2, playerSize, 0xff8800);
+        this.player.setOrigin(0, 0);
         this.physics.add.existing(this.player);
         this.player.body.setCircle(playerSize);
         this.player.body.velocity.x = this.speedX;
