@@ -53,6 +53,16 @@ export default class GameScene extends Phaser.Scene {
     }
 
     create() {
+        this.createPlayer();
+        this.createBarriers();
+        this.physics.add.collider(this.player, this.barriersGroup, () => this.gameOver());
+        this.createStats();
+
+        this.gameOverSound = this.sound.add("game-over-sound");
+        this.scene.launch('PauseOverlayScene');
+    }
+
+    createPlayer() {
         const playerX = this.width * 1 / 3;
         const playerSize = 25;
         this.player = this.add.circle(playerX, this.height / 2, playerSize, 0xff8800);
@@ -66,7 +76,9 @@ export default class GameScene extends Phaser.Scene {
         // camera follows players x coordinate, stays in the center of the screen
         const cameraShift = this.width / 2 - playerX;
         this.cameras.main.startFollow(this.player, false, 1, 0, -cameraShift, 0);
+    }
 
+    createBarriers() {
         this.barriersList = [];
         this.barriersGroup = this.physics.add.staticGroup();
         const rngSeed = Date.now().toString();
@@ -75,20 +87,6 @@ export default class GameScene extends Phaser.Scene {
         console.log(`rng seed is ${rngSeed}`);
         this.barriersGenerator = new BarrierGenerator(this.barrierShiftFromSide, this.height, rngSeed);
         this.updateBarriers();
-        this.physics.add.collider(this.player, this.barriersGroup, () => this.gameOver());
-
-        this.gameOverSound = this.sound.add("game-over-sound");
-
-        // todo: add styling and make it more visible on the background and barriers
-        // todo: highlight score if this is a new highscore
-        this.scoreText = this.add.text(this.width * 0.05, this.height * 0.05, this.getScoreText());
-        // stick to camera
-        this.scoreText.setScrollFactor(0, 0);
-
-        this.tryCountText = this.add.text(this.width * 0.9, this.height * 0.05, this.getTryCountText());
-        this.tryCountText.setScrollFactor(0, 0);
-
-        this.scene.launch('PauseOverlayScene');
     }
 
     pushBarrier(x) {
@@ -124,6 +122,17 @@ export default class GameScene extends Phaser.Scene {
         while (lastBarrier.x < maxX) {
             lastBarrier = this.pushBarrier(lastBarrier.x + this.betweenBarriers);
         }
+    }
+
+    createStats() {
+        // todo: add styling and make it more visible on the background and barriers
+        // todo: highlight score if this is a new highscore
+        this.scoreText = this.add.text(this.width * 0.05, this.height * 0.05, this.getScoreText());
+        // stick to camera
+        this.scoreText.setScrollFactor(0, 0);
+
+        this.tryCountText = this.add.text(this.width * 0.9, this.height * 0.05, this.getTryCountText());
+        this.tryCountText.setScrollFactor(0, 0);
     }
 
     getScore() {
