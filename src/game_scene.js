@@ -130,9 +130,12 @@ export default class GameScene extends Phaser.Scene {
         this.scoreText = this.add.text(this.width * 0.05, this.height * 0.05, this.getScoreText());
         // stick to camera
         this.scoreText.setScrollFactor(0, 0);
+        // show text higher then everything on screen, default is 0
+        this.scoreText.setDepth(1);
 
         this.tryCountText = this.add.text(this.width * 0.9, this.height * 0.05, this.getTryCountText());
         this.tryCountText.setScrollFactor(0, 0);
+        this.tryCountText.setDepth(1);
     }
 
     getScore() {
