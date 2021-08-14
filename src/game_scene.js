@@ -44,7 +44,7 @@ export default class GameScene extends Phaser.Scene {
         this.speedBump = 500;
         this.speedX = this.width * 0.5;
         this.gravityX = 5;
-        this.gravityY = 1000;
+        this.gravityY = 1200;
 
         this.barrierShiftFromSide = 120;
         this.betweenBarriers = 400;
