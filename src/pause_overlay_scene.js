@@ -14,6 +14,7 @@ export default class PauseOverlayScene extends Phaser.Scene {
     preload() {
         const icon_size = Math.min(this.width, this.height) * 0.6;
         this.load.svg('pause', 'assets/pause-icon.svg', { width: icon_size, height: icon_size });
+        this.load.svg('play', 'assets/play-icon.svg', { width: icon_size, height: icon_size });
     }
 
     create() {
@@ -39,23 +40,23 @@ export default class PauseOverlayScene extends Phaser.Scene {
 
         // if we allow any key here, random actions (like browser hotkeys) will unpause the game,
         // so use only selected keys here
-        this.input.keyboard.on('keydown-ESC', this.unpause, this);
-        this.input.keyboard.on('keydown-SPACE', this.unpause, this);
-        this.input.keyboard.on('keydown-ENTER', this.unpause, this);
+        this.input.keyboard.on('keydown-ESC', this.play, this);
+        this.input.keyboard.on('keydown-SPACE', this.play, this);
+        this.input.keyboard.on('keydown-ENTER', this.play, this);
 
         // todo: use 'play' image here instead, and color it up!
-        const pauseImg = this.add.image(this.width / 2, this.height / 2, 'pause');
-        pauseImg.setAlpha(0.6);
-        pauseImg.setInteractive();
-        pauseImg.on('pointerdown', this.unpause, this);
+        const playImg = this.add.image(this.width / 2, this.height / 2, 'play');
+        playImg.setAlpha(0.6);
+        playImg.setInteractive();
+        playImg.on('pointerdown', this.play, this);
 
-        // render help text a bit lower then pause symbol
-        const textPosY = pauseImg.y + pauseImg.height / 2 + this.height * 0.05;
+        // render help text a bit lower then play symbol
+        const textPosY = playImg.y + playImg.height / 2 + this.height * 0.05;
         const helpText = this.add.text(this.width / 2, textPosY, 'press space, esc or enter to continue');
         helpText.x -= helpText.width / 2;
     }
 
-    unpause() {
+    play() {
         this.scene.resume('GameScene');
         this.scene.restart();
     }
