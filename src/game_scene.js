@@ -48,17 +48,15 @@ export default class GameScene extends Phaser.Scene {
 
         this.barrierShiftFromSide = 120;
         this.betweenBarriers = 400;
-
-        this.previousHighscore = stats.getHighscore();
     }
 
     create() {
         this.createPlayer();
         this.createBarriers();
         this.physics.add.collider(this.player, this.barriersGroup, () => this.gameOver());
-        this.createStats();
 
         this.gameOverSound = this.sound.add("game-over-sound");
+        this.scene.launch('StatsScene');
         this.scene.launch('PauseOverlayScene');
     }
 
@@ -124,30 +122,8 @@ export default class GameScene extends Phaser.Scene {
         }
     }
 
-    createStats() {
-        // todo: add styling and make it more visible on the background and barriers
-        // todo: highlight score if this is a new highscore
-        this.scoreText = this.add.text(this.width * 0.05, this.height * 0.05, this.getScoreText());
-        // stick to camera
-        this.scoreText.setScrollFactor(0, 0);
-        // show text higher then everything on screen, default is 0
-        this.scoreText.setDepth(1);
-
-        this.tryCountText = this.add.text(this.width * 0.9, this.height * 0.05, this.getTryCountText());
-        this.tryCountText.setScrollFactor(0, 0);
-        this.tryCountText.setDepth(1);
-    }
-
     getScore() {
         return Math.floor(this.player.x);
-    }
-
-    getScoreText() {
-        return `${this.getScore()} (${this.previousHighscore})`;
-    }
-
-    getTryCountText() {
-        return '#' + stats.getTryCount().toString();
     }
 
     jump() {
@@ -158,13 +134,7 @@ export default class GameScene extends Phaser.Scene {
         if (this.player.y <= 0 || this.player.y > this.height) {
             this.gameOver();
         }
-
-        this.scoreText.setText(this.getScoreText());
-        const score = this.getScore();
-        if (score > stats.getHighscore()) {
-            stats.setHighscore(score);
-        }
-
+        this.events.emit('score_update', this.getScore());
         this.updateBarriers();
     }
 

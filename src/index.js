@@ -2,6 +2,7 @@ import Phaser from 'phaser';
 
 import PauseOverlayScene from './pause_overlay_scene';
 import GameScene from './game_scene';
+import StatsScene from './stats_scene';
 
 
 const config = {
@@ -16,7 +17,7 @@ const config = {
     // this makes rendered text objects look better (by x2 amount of rendering needed)
     resolution: window.devicePixelRatio,
     backgroundColor: "#5DACD8",
-    scene: [GameScene, PauseOverlayScene],
+    scene: [GameScene, StatsScene, PauseOverlayScene],
     physics: {
         default: 'arcade',
         arcade: {
