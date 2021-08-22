@@ -9,18 +9,17 @@ export class Barrier {
     }
 
     static add(scene, posX, holeY, screenHeight, color) {
-        const topRectHeight = holeY - this.holeSize / 2;
-        let topRect = scene.add.rectangle(posX, 0, this.width, topRectHeight, color);
+        const topRectHeight = holeY - config.barriers.holeSize / 2;
+        let topRect = scene.add.rectangle(posX, 0, config.barriers.width, topRectHeight, color);
         topRect.setOrigin(0, 0);
+        topRect.setStrokeStyle(config.barriers.borderWidth, config.barriers.borderColor);
 
-        const bottomRectY = holeY + this.holeSize / 2;
+        const bottomRectY = holeY + config.barriers.holeSize / 2;
         const bottomRectHeight = screenHeight - bottomRectY;
-        let bottomRect = scene.add.rectangle(posX, bottomRectY, this.width, bottomRectHeight, color);
+        let bottomRect = scene.add.rectangle(posX, bottomRectY, config.barriers.width, bottomRectHeight, color);
         bottomRect.setOrigin(0, 0);
+        bottomRect.setStrokeStyle(config.barriers.borderWidth, config.barriers.borderColor);
 
         return new Barrier(topRect, bottomRect, posX);
     }
 }
-
-Barrier.width = config.barriers.width;
-Barrier.holeSize = config.barriers.holeSize;

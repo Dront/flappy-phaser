@@ -26,6 +26,8 @@ const config = {
         holeSize: height * (1 / 3),
         distanceBeetween: 400,
         minLength: 120,
+        borderWidth: 1,
+        borderColor: 0x080808,
     },
     fadeTime: 500, // ms
     // fixed seed can be set here to replay the same map
