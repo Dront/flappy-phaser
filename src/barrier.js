@@ -1,3 +1,4 @@
+import config from './config';
 
 
 // todo: add border around barriers for visibility
@@ -22,5 +23,5 @@ export class Barrier {
     }
 }
 
-Barrier.width = 80;
-Barrier.holeSize = 540 * (1 / 3);
+Barrier.width = config.barriers.width;
+Barrier.holeSize = config.barriers.holeSize;

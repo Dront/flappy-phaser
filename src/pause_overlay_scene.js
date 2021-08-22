@@ -12,9 +12,10 @@ export default class PauseOverlayScene extends Phaser.Scene {
     }
 
     preload() {
-        const icon_size = Math.min(this.width, this.height) * 0.6;
-        this.load.svg('pause', 'assets/pause-icon.svg', { width: icon_size, height: icon_size });
-        this.load.svg('play', 'assets/play-icon.svg', { width: icon_size, height: icon_size });
+        const pauseSize = this.height * 0.2;
+        this.load.svg('pause', 'assets/pause-icon.svg', { width: pauseSize, height: pauseSize });
+        const playSize = this.height * 0.6;
+        this.load.svg('play', 'assets/play-icon.svg', { width: playSize, height: playSize });
     }
 
     create() {
@@ -22,8 +23,6 @@ export default class PauseOverlayScene extends Phaser.Scene {
         this.pausebtn = this.add.image(btnShift, this.height - btnShift, 'pause');
         this.pausebtn.setAlpha(0.6);
         this.pausebtn.setOrigin(0, 1);
-        const btnSize = this.height * 0.2;
-        this.pausebtn.setDisplaySize(btnSize, btnSize);
 
         this.pausebtn.setInteractive();
         this.pausebtn.on('pointerdown', this.pause, this);

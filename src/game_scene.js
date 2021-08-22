@@ -3,6 +3,7 @@ import * as seedrandom from 'seedrandom';
 
 import { Barrier } from './barrier';
 import * as stats from './stats';
+import config from './config';
 
 
 // Returns the same (repeatable) random sequence of barriers for provided seed
@@ -10,6 +11,7 @@ class BarrierGenerator {
     constructor(shiftFromSide, screenHeight, seed) {
         this.shiftFromSide = shiftFromSide;
         this.screenHeight = screenHeight;
+        console.log(`rng seed is ${seed}`);
         this.rng = new seedrandom(seed);
     }
 
@@ -45,14 +47,6 @@ export default class GameScene extends Phaser.Scene {
     init() {
         this.width = this.game.config.width;
         this.height = this.game.config.height;
-
-        this.speedBump = 500;
-        this.speedX = this.width * 0.5;
-        this.gravityX = 5;
-        this.gravityY = 1200;
-
-        this.barrierShiftFromSide = 120;
-        this.betweenBarriers = 400;
     }
 
     create() {
@@ -66,14 +60,13 @@ export default class GameScene extends Phaser.Scene {
     }
 
     createPlayer() {
-        const playerX = this.width * 1 / 3;
-        const playerSize = 25;
-        this.player = this.add.circle(playerX, this.height / 2, playerSize, 0xff8800);
+        const playerX = config.player.initialX;
+        this.player = this.add.circle(playerX, this.height / 2, config.player.size, config.player.color);
         this.physics.add.existing(this.player);
-        this.player.body.setCircle(playerSize);
-        this.player.body.velocity.x = this.speedX;
+        this.player.body.setCircle(config.player.size);
+        this.player.body.velocity.x = config.player.speedX;
         // slowly increase horizontal speed
-        this.player.body.setGravity(this.gravityX, this.gravityY);
+        this.player.body.setGravity(config.player.gravityX, config.player.gravityY);
         this.input.on("pointerdown", this.jump, this);
         this.input.keyboard.on('keydown-SPACE', this.jump, this);
 
@@ -85,11 +78,7 @@ export default class GameScene extends Phaser.Scene {
     createBarriers() {
         this.barriersList = [];
         this.barriersGroup = this.physics.add.staticGroup();
-        const rngSeed = Date.now().toString();
-        // fixed seed can be set here to replay the same map
-        // const rngSeed = '1621771730784';
-        console.log(`rng seed is ${rngSeed}`);
-        this.barriersGenerator = new BarrierGenerator(this.barrierShiftFromSide, this.height, rngSeed);
+        this.barriersGenerator = new BarrierGenerator(config.barriers.minLength, this.height, config.rngSeed);
         this.updateBarriers();
     }
 
@@ -118,13 +107,13 @@ export default class GameScene extends Phaser.Scene {
         if (this.barriersList.length === 0) {
             // the first barrier must appear a bit later then ordinary barrier,
             // otherwise player has no time to react at the start of the game
-            this.pushBarrier(this.player.x + this.betweenBarriers * 1.5);
+            this.pushBarrier(this.player.x + config.barriers.distanceBeetween * 1.5);
         }
 
         const maxX = this.player.x + this.width;
         let lastBarrier = this.barriersList[this.barriersList.length - 1];
         while (lastBarrier.x < maxX) {
-            lastBarrier = this.pushBarrier(lastBarrier.x + this.betweenBarriers);
+            lastBarrier = this.pushBarrier(lastBarrier.x + config.barriers.distanceBeetween);
         }
     }
 
@@ -133,7 +122,7 @@ export default class GameScene extends Phaser.Scene {
     }
 
     jump() {
-        this.player.body.velocity.y -= this.speedBump;
+        this.player.body.velocity.y -= config.player.speedBump;
     }
 
     update() {
@@ -149,9 +138,8 @@ export default class GameScene extends Phaser.Scene {
         // If we disable player immidiately it'll look like the player has not touched the barrier,
         // so small delay is used here to disable player just after rendering the next frame.
         this.time.delayedCall(1, () => this.player.body.setEnable(false));
-        const fadeTime = 500;  // ms
-        this.cameras.main.fade(fadeTime);
-        this.time.delayedCall(fadeTime, () => this.scene.restart());
+        this.cameras.main.fade(config.fadeTime);
+        this.time.delayedCall(config.fadeTime, () => this.scene.restart());
         stats.incTryCount();
         this.gameOverSound.play();
     }

@@ -9,8 +9,8 @@ import StatsScene from './stats_scene';
 const phaserConfig = {
     type: Phaser.AUTO,
     // todo: lockOrientation?
-    width: 960,
-    height: 540,
+    width: config.width,
+    height: config.height,
     scale: {
         mode: Phaser.Scale.FIT,
         autoCenter: Phaser.Scale.CENTER_BOTH,

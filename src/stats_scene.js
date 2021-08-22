@@ -10,8 +10,8 @@ export default class StatsScene extends Phaser.Scene {
     }
 
     init() {
-        this.width = this.game.config.width;
-        this.height = this.game.config.height;
+        this.width = config.width;
+        this.height = config.height;
 
         this.currentScore = 0;
         this.previousHighscore = stats.getHighscore();
