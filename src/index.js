@@ -1,11 +1,12 @@
 import Phaser from 'phaser';
 
+import config from './config';
 import PauseOverlayScene from './pause_overlay_scene';
 import GameScene from './game_scene';
 import StatsScene from './stats_scene';
 
 
-const config = {
+const phaserConfig = {
     type: Phaser.AUTO,
     // todo: lockOrientation?
     width: 960,
@@ -14,7 +15,7 @@ const config = {
         mode: Phaser.Scale.FIT,
         autoCenter: Phaser.Scale.CENTER_BOTH,
     },
-    backgroundColor: "#5DACD8",
+    backgroundColor: config.backgroundColor,
     scene: [GameScene, StatsScene, PauseOverlayScene],
     physics: {
         default: 'arcade',
@@ -24,4 +25,4 @@ const config = {
     },
 };
 
-const game = new Phaser.Game(config);
+const game = new Phaser.Game(phaserConfig);
