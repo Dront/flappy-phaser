@@ -54,6 +54,7 @@ export default class GameScene extends Phaser.Scene {
 
     create() {
         this.createPlayer();
+        this.createPlayerPath();
         this.createBarriers();
         this.physics.add.collider(this.player, this.barriersGroup, () => this.gameOver());
 
@@ -120,6 +121,26 @@ export default class GameScene extends Phaser.Scene {
         }
     }
 
+    makePathLine(x1, y1, x2, y2) {
+        return this.add.line(0, 0, x1, y1, x2, y2, config.player.pathColor)
+    }
+
+    createPlayerPath() {
+        const initLine = this.makePathLine(this.player.x, this.player.y, this.player.x, this.player.y);
+        this.playerPath = [initLine];
+    }
+
+    updatePlayerPath() {
+        const lastLinePos = this.playerPath[this.playerPath.length - 1].geom;
+        const newLine = this.makePathLine(lastLinePos.x2, lastLinePos.y2, this.player.x, this.player.y);
+        this.playerPath.push(newLine);
+
+        const minX = this.player.x - this.width;
+        while (this.playerPath.length > 1 && this.playerPath[0].geom.x2 < minX) {
+            this.playerPath.shift().destroy();
+        }
+    }
+
     getScore() {
         return Math.floor(this.player.x);
     }
@@ -134,6 +155,7 @@ export default class GameScene extends Phaser.Scene {
         }
         this.events.emit('score_update', this.getScore());
         this.updateBarriers();
+        this.updatePlayerPath();
     }
 
     gameOver() {

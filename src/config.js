@@ -20,6 +20,7 @@ const config = {
         gravityX: 5,
         gravityY: 1200,
         color: 0xff8800,
+        pathColor: 0xff0000,
     },
     barriers: {
         width: 80,
