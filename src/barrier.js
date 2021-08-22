@@ -6,14 +6,14 @@ export class Barrier {
         this.x = x;
     }
 
-    static add(scene, posX, holeY, screenHeight) {
+    static add(scene, posX, holeY, screenHeight, color) {
         const topRectHeight = holeY - this.holeSize / 2;
-        let topRect = scene.add.rectangle(posX, 0, this.width, topRectHeight, this.color);
+        let topRect = scene.add.rectangle(posX, 0, this.width, topRectHeight, color);
         topRect.setOrigin(0, 0);
 
         const bottomRectY = holeY + this.holeSize / 2;
         const bottomRectHeight = screenHeight - bottomRectY;
-        let bottomRect = scene.add.rectangle(posX, bottomRectY, this.width, bottomRectHeight, this.color);
+        let bottomRect = scene.add.rectangle(posX, bottomRectY, this.width, bottomRectHeight, color);
         bottomRect.setOrigin(0, 0);
 
         return new Barrier(topRect, bottomRect, posX);
@@ -22,4 +22,3 @@ export class Barrier {
 
 Barrier.width = 80;
 Barrier.holeSize = 540 * (1 / 3);
-Barrier.color = 0x00ff88;

@@ -17,12 +17,17 @@ class BarrierGenerator {
         return Math.floor(this.rng() * (max - min + 1) + min);
     }
 
+    randomFloat() {
+        return this.rng();
+    }
+
     generate(scene, x) {
         const holeY = this.randomIntFromInterval(
             this.shiftFromSide,
             this.screenHeight - this.shiftFromSide,
         );
-        return Barrier.add(scene, x, holeY, this.screenHeight);
+        const color = Phaser.Display.Color.HSVToRGB(this.randomFloat(), 1, 0.8).color
+        return Barrier.add(scene, x, holeY, this.screenHeight, color);
     }
 }
 
