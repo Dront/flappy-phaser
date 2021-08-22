@@ -11,6 +11,9 @@ class BarrierGenerator {
     constructor(shiftFromSide, screenHeight, seed) {
         this.shiftFromSide = shiftFromSide;
         this.screenHeight = screenHeight;
+        if (seed === 0) {
+            seed = Date.now().toString();
+        }
         console.log(`rng seed is ${seed}`);
         this.rng = new seedrandom(seed);
     }

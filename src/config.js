@@ -32,7 +32,7 @@ const config = {
     fadeTime: 500, // ms
     // fixed seed can be set here to replay the same map
     // rngSeed: '1621771730784';
-    rngSeed: Date.now().toString(),
+    rngSeed: 0,
 };
 
 export default config;
