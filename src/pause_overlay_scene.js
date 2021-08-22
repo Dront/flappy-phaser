@@ -23,7 +23,7 @@ export default class PauseOverlayScene extends Phaser.Scene {
     create() {
         const btnShift = this.height * 0.05;
         this.pausebtn = this.add.image(btnShift, this.height - btnShift, 'pause');
-        this.pausebtn.setAlpha(0.6);
+        this.pausebtn.setAlpha(0.8);
         this.pausebtn.setOrigin(0, 1);
 
         this.pausebtn.setInteractive();
@@ -46,7 +46,7 @@ export default class PauseOverlayScene extends Phaser.Scene {
         this.input.keyboard.on('keydown-ENTER', this.play, this);
 
         const playImg = this.add.image(this.width / 2, this.height / 2, 'play');
-        playImg.setAlpha(0.6);
+        playImg.setAlpha(0.8);
         playImg.setInteractive();
         playImg.on('pointerdown', this.play, this);
 
