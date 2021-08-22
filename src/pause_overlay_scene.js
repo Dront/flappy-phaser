@@ -45,7 +45,6 @@ export default class PauseOverlayScene extends Phaser.Scene {
         this.input.keyboard.on('keydown-SPACE', this.play, this);
         this.input.keyboard.on('keydown-ENTER', this.play, this);
 
-        // todo: use 'play' image here instead, and color it up!
         const playImg = this.add.image(this.width / 2, this.height / 2, 'play');
         playImg.setAlpha(0.6);
         playImg.setInteractive();

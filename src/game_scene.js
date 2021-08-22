@@ -45,8 +45,8 @@ export default class GameScene extends Phaser.Scene {
     }
 
     init() {
-        this.width = this.game.config.width;
-        this.height = this.game.config.height;
+        this.width = config.width;
+        this.height = config.height;
     }
 
     create() {

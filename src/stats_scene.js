@@ -19,8 +19,6 @@ export default class StatsScene extends Phaser.Scene {
     }
 
     create() {
-        // todo: add styling and make it more visible on the background and barriers
-        // todo: highlight score if this is a new highscore
         this.scoreText = this.add.text(this.width * 0.05, this.height * 0.05, this.getScoreText(), config.font);
         this.tryCountText = this.add.text(this.width * 0.9, this.height * 0.05, this.getTryCountText(), config.font);
 

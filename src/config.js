@@ -29,7 +29,7 @@ const config = {
     },
     fadeTime: 500, // ms
     // fixed seed can be set here to replay the same map
-    // const rngSeed = '1621771730784';
+    // rngSeed: '1621771730784';
     rngSeed: Date.now().toString(),
 };
 

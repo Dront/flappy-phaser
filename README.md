@@ -11,5 +11,6 @@ npm run start-global  # externally visible server
 
 ### TODO
 - fix rendering in mobile landscape mode
-- replace pause image in pause overlay 
-- color up stats and pause text
+- color up play and pause images
+- add borders to barriers
+- highlight score if this is a new highscore
