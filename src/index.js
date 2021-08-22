@@ -14,8 +14,6 @@ const config = {
         mode: Phaser.Scale.FIT,
         autoCenter: Phaser.Scale.CENTER_BOTH,
     },
-    // this makes rendered text objects look better (by x2 amount of rendering needed)
-    resolution: window.devicePixelRatio,
     backgroundColor: "#5DACD8",
     scene: [GameScene, StatsScene, PauseOverlayScene],
     physics: {

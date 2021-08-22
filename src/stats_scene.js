@@ -20,9 +20,14 @@ export default class StatsScene extends Phaser.Scene {
     create() {
         // todo: add styling and make it more visible on the background and barriers
         // todo: highlight score if this is a new highscore
-        // todo: cool font
-        this.scoreText = this.add.text(this.width * 0.05, this.height * 0.05, this.getScoreText());
-        this.tryCountText = this.add.text(this.width * 0.9, this.height * 0.05, this.getTryCountText());
+        const fontSettings = {
+            fontFamily: '"PixelEmulator"',
+            fontSize: '20px',
+            color: '#f7382a',
+            resolution: 4,
+        };
+        this.scoreText = this.add.text(this.width * 0.05, this.height * 0.05, this.getScoreText(), fontSettings);
+        this.tryCountText = this.add.text(this.width * 0.9, this.height * 0.05, this.getTryCountText(), fontSettings);
 
         this.scene.get('GameScene').events.on('score_update', newScore => {
             this.currentScore = newScore;
@@ -34,7 +39,7 @@ export default class StatsScene extends Phaser.Scene {
     }
 
     getScoreText() {
-        return `${this.currentScore} (${this.previousHighscore})`;
+        return `${this.currentScore} / ${this.previousHighscore}`;
     }
 
     getTryCountText() {
