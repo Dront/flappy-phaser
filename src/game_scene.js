@@ -75,6 +75,7 @@ export default class GameScene extends Phaser.Scene {
         // slowly increase horizontal speed
         this.player.body.setGravity(this.gravityX, this.gravityY);
         this.input.on("pointerdown", this.jump, this);
+        this.input.keyboard.on('keydown-SPACE', this.jump, this);
 
         // camera follows players x coordinate, stays in the center of the screen
         const cameraShift = this.width / 2 - playerX;

@@ -1,4 +1,6 @@
 
+
+// todo: add border around barriers for visibility
 export class Barrier {
     constructor(topRect, bottomRect, x) {
         this.topRect = topRect;
