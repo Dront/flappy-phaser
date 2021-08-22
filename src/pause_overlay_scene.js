@@ -1,5 +1,7 @@
 import Phaser from 'phaser';
 
+import config from './config';
+
 
 export default class PauseOverlayScene extends Phaser.Scene {
     constructor() {
@@ -51,7 +53,7 @@ export default class PauseOverlayScene extends Phaser.Scene {
 
         // render help text a bit lower then play symbol
         const textPosY = playImg.y + playImg.height / 2 + this.height * 0.05;
-        const helpText = this.add.text(this.width / 2, textPosY, 'press space, esc or enter to continue');
+        const helpText = this.add.text(this.width / 2, textPosY, 'press space esc or enter to continue', config.font);
         helpText.x -= helpText.width / 2;
     }
 
