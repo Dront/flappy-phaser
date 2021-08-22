@@ -12,5 +12,4 @@ npm run start-global  # externally visible server
 ### TODO
 - fix rendering in mobile landscape mode
 - color up play and pause images
-- add borders to barriers
 - highlight score if this is a new highscore
