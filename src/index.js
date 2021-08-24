@@ -1,9 +1,8 @@
 import Phaser from 'phaser';
 
 import config from './config';
-import PauseOverlayScene from './pause_overlay_scene';
-import GameScene from './game_scene';
-import StatsScene from './stats_scene';
+import InitScene from './init_scene';
+
 
 
 const phaserConfig = {
@@ -16,7 +15,7 @@ const phaserConfig = {
         autoCenter: Phaser.Scale.CENTER_BOTH,
     },
     backgroundColor: config.backgroundColor,
-    scene: [GameScene, StatsScene, PauseOverlayScene],
+    scene: [InitScene],
     physics: {
         default: 'arcade',
         arcade: {
