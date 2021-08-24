@@ -3,6 +3,10 @@ import Phaser from 'phaser';
 import config from './config';
 
 
+const STATE_PLAYING = 'playing';
+const STATE_PAUSED = 'paused';
+
+
 export default class PauseOverlayScene extends Phaser.Scene {
     constructor() {
         super('PauseOverlayScene');
@@ -20,7 +24,16 @@ export default class PauseOverlayScene extends Phaser.Scene {
         this.load.svg('play', 'assets/play-icon.svg', { width: playSize, height: playSize });
     }
 
-    create() {
+    create(data) {
+        const state = data.state || STATE_PLAYING;
+        if (state == STATE_PLAYING) {
+            this.showPlaying();
+            return
+        }
+        this.showPaused();
+    }
+
+    showPlaying() {
         const btnShift = this.height * 0.05;
         this.pausebtn = this.add.image(btnShift, this.height - btnShift, 'pause');
         this.pausebtn.setAlpha(0.8);
@@ -34,9 +47,10 @@ export default class PauseOverlayScene extends Phaser.Scene {
 
     pause() {
         this.scene.pause('GameScene');
+        this.scene.restart({state: STATE_PAUSED});
+    }
 
-        this.pausebtn.destroy();
-
+    showPaused() {
         this.add.rectangle(0, 0, this.width, this.height, 0x000000, 0.3).setOrigin(0, 0);
 
         // if we allow any key here, random actions (like browser hotkeys) will unpause the game,
@@ -58,6 +72,6 @@ export default class PauseOverlayScene extends Phaser.Scene {
 
     play() {
         this.scene.resume('GameScene');
-        this.scene.restart();
+        this.scene.restart({state: STATE_PLAYING});
     }
 }
