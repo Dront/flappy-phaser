@@ -12,7 +12,6 @@ npm run start-global  # externally visible server
 ```
 
 ### TODO
-- fix attempt number increment when falling down
 - fix rendering in mobile landscape mode
 - load custom font before game starts
 - highlight score if this is a new highscore

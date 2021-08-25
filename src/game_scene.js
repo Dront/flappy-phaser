@@ -50,6 +50,7 @@ export default class GameScene extends Phaser.Scene {
     init() {
         this.width = config.width;
         this.height = config.height;
+        this.playing = true;
     }
 
     create() {
@@ -159,6 +160,10 @@ export default class GameScene extends Phaser.Scene {
     }
 
     gameOver() {
+        if (!this.playing) {
+            return;
+        }
+        this.playing = false;
         // This function is called on collision before rendering the collision frame itself.
         // If we disable player immidiately it'll look like the player has not touched the barrier,
         // so small delay is used here to disable player just after rendering the next frame.
