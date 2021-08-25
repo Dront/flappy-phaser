@@ -2,6 +2,8 @@
 
 Flappy bird game clone. Created to learn a bit of js and [phaser](https://phaser.io/) game engine.
 
+[Play here](https://dront.github.io/flappy-phaser/)
+
 ### Useful commands
 ```bash
 npm i  # setup
