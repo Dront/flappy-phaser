@@ -5,6 +5,7 @@ import GameScene from './game_scene';
 import PauseOverlayScene from './pause_overlay_scene';
 import StatsScene from './stats_scene';
 import {getHighscore, getTryCount} from './stats';
+import WebFontFile from './font_loader'
 
 
 export default class InitScene extends Phaser.Scene {
@@ -20,6 +21,7 @@ export default class InitScene extends Phaser.Scene {
     preload() {
         const playSize = this.height * 0.6;
         this.load.svg('play', 'assets/play-icon.svg', { width: playSize, height: playSize });
+        this.load.addFile(new WebFontFile(this.load, config.font.fontFamily));
     }
 
     create() {
