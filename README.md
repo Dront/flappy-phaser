@@ -12,7 +12,6 @@ npm run start-global  # externally visible server
 ```
 
 ### TODO
-- fix rendering in mobile landscape mode
 - highlight score if this is a new highscore
 - add animation to player
 - add nicer path
